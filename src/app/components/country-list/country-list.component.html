@@ -1,13 +1,37 @@
 <div class="country-list-container">
-  <!-- Loading indicator -->
+
+  <div class="controls">
+    <div class="search-wrapper">
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        (keyup.enter)="onSearch()"
+        placeholder="Search for a country..."
+      />
+      <button (click)="onSearch()" aria-label="Search">
+        <i class="fa fa-search"></i>
+      </button>
+    </div>
+    
+    <div class="filter-wrapper">
+      <select 
+        [(ngModel)]="selectedRegion" 
+        (change)="onRegionChange()"
+        class="region-select"
+      >
+        <option value="">Filter by Region</option>
+        <option *ngFor="let region of regions" [value]="region">{{ region }}</option>
+      </select>
+    </div>
+  </div>
+
   <div *ngIf="loading$ | async" class="loading">
     Loading countries...
   </div>
 
-  <!-- Countries grid -->
   <div *ngIf="!(loading$ | async)" class="countries-grid">
     <div 
-      *ngFor="let country of countries$ | async" 
+      *ngFor="let country of filteredCountries$ | async" 
       class="card"
       (click)="onCountryClick(country)"
     >
