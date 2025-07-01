@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { CountryApiService } from './services/countries.service';
 
 @Component({
   selector: 'app-root',
@@ -8,14 +7,6 @@ import { CountryApiService } from './services/countries.service';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   title = 'countries-app';
-
-  constructor(private countryApiService: CountryApiService) {}
-
-  ngOnInit() {
-    this.countryApiService.getAllCountries().subscribe(data => {
-      console.log('Countries API Response:', data);
-    });
-  }
 }

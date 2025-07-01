@@ -7,21 +7,22 @@ import * as CountriesActions from '../actions/countries.actions';
 
 @Injectable()
 export class CountriesEffects {
-
-  loadCountries$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(CountriesActions.loadCountries),
-      switchMap(() =>
-        this.countryApiService.getAllCountries().pipe(
-          map(countries => CountriesActions.loadCountriesSuccess({ countries })),
-          catchError(error => of(CountriesActions.loadCountriesFailure({ error: error.message })))
-        )
-      )
-    )
-  );
+  loadCountries$;
 
   constructor(
     private actions$: Actions,
     private countryApiService: CountryApiService
-  ) {}
+  ) {
+    this.loadCountries$ = createEffect(() =>
+      this.actions$.pipe(
+        ofType(CountriesActions.loadCountries),
+        switchMap(() =>
+          this.countryApiService.getAllCountries().pipe(
+            map(countries => CountriesActions.loadCountriesSuccess({ countries })),
+            catchError(error => of(CountriesActions.loadCountriesFailure({ error: error.message })))
+          )
+        )
+      )
+    );
+  }
 }
