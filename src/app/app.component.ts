@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { environment } from '../environments/environment';
+import { CountriesService } from './services/countries.service';
 
 @Component({
   selector: 'app-root',
@@ -8,9 +8,14 @@ import { environment } from '../environments/environment';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'countries-app';
-  constructor() {
-    console.log('environment', environment.apiurl)
+
+  constructor(private countriesService: CountriesService) {}
+
+  ngOnInit() {
+    this.countriesService.getCountries().subscribe(data => {
+      console.log('Countries API Response:', data);
+    });
   }
 }
