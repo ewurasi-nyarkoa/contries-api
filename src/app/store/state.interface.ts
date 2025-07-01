@@ -5,6 +5,8 @@ export interface CountriesState {
   selectedCountry: Country | null;
   loading: boolean;
   error: string | null;
+  searchQuery: string;
+  filterRegion: string;
 }
 
 export interface AppState {

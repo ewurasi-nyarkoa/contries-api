@@ -19,3 +19,13 @@ export const selectCountry = createAction(
 );
 
 export const clearSelectedCountry = createAction('[Countries] Clear Selected Country');
+
+export const setSearchQuery = createAction(
+  '[Countries] Set Search Query',
+  props<{ searchQuery: string }>()
+);
+
+export const setFilterRegion = createAction(
+  '[Countries] Set Filter Region',
+  props<{ region: string }>()
+);
