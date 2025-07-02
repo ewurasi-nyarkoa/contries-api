@@ -29,3 +29,8 @@ export const setFilterRegion = createAction(
   '[Countries] Set Filter Region',
   props<{ region: string }>()
 );
+
+export const getCountryByCode = createAction(
+  '[Countries] Get Country By Code',
+  props<{ code: string }>()
+);

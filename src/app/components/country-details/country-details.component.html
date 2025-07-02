@@ -1,0 +1,28 @@
+<div class="country-details-container">
+  <button class="back-btn" (click)="goBack()">
+    <svg class="icon-left"></svg>
+    Back
+  </button>
+
+  <div *ngIf="loading$ | async" class="loading">
+    Loading country details...
+  </div>
+
+  <main *ngIf="selectedCountry$ | async as country" class="content">
+    <div class="flag">
+      <img [src]="country.flags.png" [alt]="'Flag of ' + country.name.common" />
+    </div>
+
+    <div class="details">
+      <h2>{{ country.name.common }}</h2>
+      <div class="info-grid">
+        <div class="info-left">
+          <p><strong>Native Name:</strong> {{ country.name.official }}</p>
+          <p><strong>Population:</strong> {{ country.population | number }}</p>
+          <p><strong>Region:</strong> {{ country.region }}</p>
+          <p><strong>Capital:</strong> {{ country.capital?.[0] || 'N/A' }}</p>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
