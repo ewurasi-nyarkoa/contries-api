@@ -28,11 +28,20 @@ export class CountryDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
-    const code = this.route.snapshot.paramMap.get('code');
-    if (code) {
-      this.selectedCountry$.subscribe(country => {
-        if (!country) {
-          this.store.dispatch(CountriesActions.getCountryByCode({ code }));
+    const countryName = this.route.snapshot.paramMap.get('code');
+    if (countryName) {
+      // Load all countries first, then find the specific one
+      this.store.dispatch(CountriesActions.loadCountries());
+      
+      // Find country by name from the loaded countries
+      this.store.select(CountriesSelectors.selectCountries).subscribe(countries => {
+        if (countries.length > 0) {
+          const country = countries.find(c => 
+            c.name.common.toLowerCase().replace(/\s+/g, '-') === countryName
+          );
+          if (country) {
+            this.store.dispatch(CountriesActions.selectCountry({ country }));
+          }
         }
       });
     }
@@ -40,5 +49,15 @@ export class CountryDetailsComponent implements OnInit {
 
   goBack() {
     this.router.navigate(['/countries']);
+  }
+
+  getCurrencies(currencies: any): string {
+    if (!currencies) return 'N/A';
+    return Object.values(currencies).map((currency: any) => currency.name).join(', ');
+  }
+
+  getLanguages(languages: any): string {
+    if (!languages) return 'N/A';
+    return Object.values(languages).join(', ');
   }
 }

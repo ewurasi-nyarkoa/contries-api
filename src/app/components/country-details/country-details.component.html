@@ -1,6 +1,6 @@
 <div class="country-details-container">
   <button class="back-btn" (click)="goBack()">
-    <svg class="icon-left"></svg>
+    <svg class="icon-left" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-move-left-icon lucide-move-left"><path d="M6 8L2 12L6 16"/><path d="M2 12H22"/></svg>
     Back
   </button>
 
@@ -20,7 +20,13 @@
           <p><strong>Native Name:</strong> {{ country.name.official }}</p>
           <p><strong>Population:</strong> {{ country.population | number }}</p>
           <p><strong>Region:</strong> {{ country.region }}</p>
+          <p><strong>Sub Region:</strong> {{ country.subregion || 'N/A' }}</p>
           <p><strong>Capital:</strong> {{ country.capital?.[0] || 'N/A' }}</p>
+        </div>
+        <div class="info-right">
+          <p><strong>Top Level Domain:</strong> {{ country.tld?.[0] || 'N/A' }}</p>
+          <p><strong>Currencies:</strong> {{ getCurrencies(country.currencies) }}</p>
+          <p><strong>Languages:</strong> {{ getLanguages(country.languages) }}</p>
         </div>
       </div>
     </div>

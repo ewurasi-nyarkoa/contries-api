@@ -7,8 +7,14 @@ export interface Country {
   name: {
     common: string;
     official: string;
+    nativeName?: any;
   };
   capital: string[];
   region: string;
+  subregion?: string;
   population: number;
+  tld?: string[];
+  currencies?: any;
+  languages?: any;
+  borders?: string[];
 }

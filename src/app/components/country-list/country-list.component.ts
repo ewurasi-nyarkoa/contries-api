@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable, combineLatest, map } from 'rxjs';
 import { Country } from '../../models/country.interface';
@@ -24,7 +25,10 @@ export class CountryListComponent implements OnInit {
   selectedRegion: string = '';
   regions: string[] = ['Africa', 'America', 'Asia', 'Europe', 'Oceania'];
 
-  constructor(private store: Store<AppState>) {
+  constructor(
+    private store: Store<AppState>,
+    private router: Router
+  ) {
     this.countries$ = this.store.select(CountriesSelectors.selectCountries);
     this.loading$ = this.store.select(CountriesSelectors.selectLoading);
     this.searchQuery$ = this.store.select(CountriesSelectors.selectSearchQuery);
@@ -60,7 +64,7 @@ export class CountryListComponent implements OnInit {
 
   onCountryClick(country: Country) {
     this.store.dispatch(CountriesActions.selectCountry({ country }));
-    // TODO: Navigate to country details
+    this.router.navigate(['/country', country.name.common.toLowerCase().replace(/\s+/g, '-')]);
   }
 
   onSearch() {
