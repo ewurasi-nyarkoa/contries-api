@@ -15,7 +15,7 @@ export class CountryApiService {
 
   getAllCountries(): Observable<Country[]> {
     this.loadingSubject.next(true);
-    return this.http.get<Country[]>(environment.apiurl)
+    return this.http.get<Country[]>('https://restcountries.com/v3.1/all?fields=name,capital,flags,population,region,subregion,languages,currencies,borders,tld')
       .pipe(
         catchError(this.handleError),
         finalize(() => this.loadingSubject.next(false))
@@ -24,7 +24,8 @@ export class CountryApiService {
 
   getCountryByCode(code: string): Observable<Country[]> {
     this.loadingSubject.next(true);
-    return this.http.get<Country[]>(`https://restcountries.com/v3.1/alpha/${code}?fields=name,flags,capital,region,population`)
+    return this.http.get<Country[]>(`https://restcountries.com/v3.1/alpha/${code}?fields=name,capital,flags,population,region,subregion,language,currencies,borders,tld`)
+
       .pipe(
         catchError(this.handleError),
         finalize(() => this.loadingSubject.next(false))
@@ -34,7 +35,7 @@ export class CountryApiService {
   getCountriesByCodes(codes: string[]): Observable<Country[]> {
     this.loadingSubject.next(true);
     const codesParam = codes.join(',');
-    return this.http.get<Country[]>(`https://restcountries.com/v3.1/alpha?codes=${codesParam}&fields=name,flags,capital,region,population`)
+    return this.http.get<Country[]>(`https://restcountries.com/v3.1/alpha?codes=${codesParam}&fields=name,capital,flags,population,region,subregion,language,currencies,borders,tld`)
       .pipe(
         catchError(this.handleError),
         finalize(() => this.loadingSubject.next(false))

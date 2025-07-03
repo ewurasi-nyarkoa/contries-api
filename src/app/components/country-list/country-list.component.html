@@ -1,13 +1,37 @@
 <div class="country-list-container">
-  <!-- Loading indicator -->
+
+  <div class="controls">
+    <div class="search-wrapper">
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        (keyup.enter)="onSearch()"
+        placeholder="Search for a country..."
+      />
+      <button (click)="onSearch()" aria-label="Search">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search-icon lucide-search"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+      </button>
+    </div>
+    
+    <div class="filter-wrapper">
+      <select 
+        [(ngModel)]="selectedRegion" 
+        (change)="onRegionChange()"
+        class="region-select"
+      >
+        <option value="">Filter by Region</option>
+        <option *ngFor="let region of regions" [value]="region">{{ region }}</option>
+      </select>
+    </div>
+  </div>
+
   <div *ngIf="loading$ | async" class="loading">
     Loading countries...
   </div>
 
-  <!-- Countries grid -->
   <div *ngIf="!(loading$ | async)" class="countries-grid">
     <div 
-      *ngFor="let country of countries$ | async" 
+      *ngFor="let country of filteredCountries$ | async" 
       class="card"
       (click)="onCountryClick(country)"
     >
