@@ -8,10 +8,11 @@ import { Country } from '../../models/country.interface';
 import { AppState } from '../../store/state.interface';
 import * as CountriesActions from '../../store/actions/countries.actions';
 import * as CountriesSelectors from '../../store/selectors/countries.selectors';
+import { PaginationComponent } from '../pagination/pagination.component';
 
 @Component({
   selector: 'app-country-list',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, PaginationComponent],
   templateUrl: './country-list.component.html',
   styleUrl: './country-list.component.scss'
 })
@@ -24,6 +25,10 @@ export class CountryListComponent implements OnInit {
   searchTerm: string = '';
   selectedRegion: string = '';
   regions: string[] = ['Africa', 'America', 'Asia', 'Europe', 'Oceania'];
+  currentPage: number = 1;
+  pageSize: number = 12;
+  totalItems: number = 0;
+  paginatedCountries$: Observable<Country[]>;
 
   constructor(
     private store: Store<AppState>,
@@ -53,7 +58,19 @@ export class CountryListComponent implements OnInit {
           filtered = filtered.filter(country => country.region === filterRegion);
         }
         
+        // Update total items for pagination
+        this.totalItems = filtered.length;
+        
         return filtered;
+      })
+    );
+    
+    // Create paginated countries observable
+    this.paginatedCountries$ = this.filteredCountries$.pipe(
+      map(countries => {
+        const startIndex = (this.currentPage - 1) * this.pageSize;
+        const endIndex = startIndex + this.pageSize;
+        return countries.slice(startIndex, endIndex);
       })
     );
   }
@@ -73,5 +90,16 @@ export class CountryListComponent implements OnInit {
 
   onRegionChange() {
     this.store.dispatch(CountriesActions.setFilterRegion({ region: this.selectedRegion }));
+  }
+  onPageChange(page: number): void {
+    this.currentPage = page;
+    // Trigger re-calculation of paginated countries
+    this.paginatedCountries$ = this.filteredCountries$.pipe(
+      map(countries => {
+        const startIndex = (this.currentPage - 1) * this.pageSize;
+        const endIndex = startIndex + this.pageSize;
+        return countries.slice(startIndex, endIndex);
+      })
+    );
   }
 }
