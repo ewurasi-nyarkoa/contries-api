@@ -1,0 +1,44 @@
+
+@if (totalPages > 1) {
+  <div class="pagination-nav">
+    <button 
+      (click)="changePage(currentPage - 1)"
+      [disabled]="currentPage === 1"
+      class="pagination-btn nav-btn"
+    >
+      ‹ Prev
+    </button>
+    
+    @if (pages[0] > 1) {
+      <button (click)="changePage(1)" class="pagination-btn">1</button>
+      @if (pages[0] > 2) {
+        <span class="ellipsis">...</span>
+      }
+    }
+    
+    @for (page of pages; track page) {
+      <button 
+        (click)="changePage(page)"
+        [class.active]="page === currentPage"
+        class="pagination-btn"
+      >
+        {{ page }}
+      </button>
+    }
+    
+    @if (pages[pages.length - 1] < totalPages) {
+      @if (pages[pages.length - 1] < totalPages - 1) {
+        <span class="ellipsis">...</span>
+      }
+      <button (click)="changePage(totalPages)" class="pagination-btn">{{ totalPages }}</button>
+    }
+    
+    <button 
+      (click)="changePage(currentPage + 1)"
+      [disabled]="currentPage === totalPages"
+      class="pagination-btn nav-btn"
+    >
+      Next ›
+    </button>
+</div>
+}
